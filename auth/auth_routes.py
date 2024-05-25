@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 import logging
-from utils.mongodb_helpers import *
+from db.mongodb_helpers import *
 from auth.auth_controller import AuthController
 from models.user import UserInputModel, UserCredentials, UserModel
 from flask_jwt_extended import create_access_token

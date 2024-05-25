@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from pymongo import ASCENDING, DESCENDING
-from utils.mongodb_helpers import *
+from db.mongodb_helpers import *
 import logging
 from user.user_controller import UserController
 from models.user import UserModel
@@ -32,7 +32,7 @@ def get_user(user_id: str) -> UserModel:
 
 
 @user_routes.route("/users", methods=["GET", "POST"])
-@jwt_required
+@jwt_required()
 def get_users() -> ListSuccessResponse:
     try:
         user_logger.info(f"get_users called with url {request.url}")

@@ -1,8 +1,8 @@
 from models.user import UserModel
 from bson import ObjectId
 from pymongo.collection import Collection, Cursor
-from db.mongodb import MongoDBConnection
-from utils.mongodb_helpers import *
+from db.mongodb_connection import MongoDBConnection
+from db.mongodb_helpers import *
 
 
 class UserController:

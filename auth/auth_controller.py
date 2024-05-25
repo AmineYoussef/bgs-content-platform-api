@@ -1,6 +1,6 @@
 from models.user import *
 from pymongo.collection import Collection
-from db.mongodb import MongoDBConnection
+from db.mongodb_connection import MongoDBConnection
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
