@@ -2,6 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from auth.auth_routes import auth_routes
 from user.user_routes import user_routes
+from content.content_routes import content_routes
 from dotenv import load_dotenv
 import os, logging
 from flask_jwt_extended import JWTManager
@@ -36,6 +37,7 @@ if not os.path.exists(os.getenv("LOG_DIR")):
 # Register the Blueprints with the app
 app.register_blueprint(auth_routes)
 app.register_blueprint(user_routes)
+app.register_blueprint(content_routes)
 
 
 if __name__ == "__main__":
