@@ -1,21 +1,28 @@
 from pymongo import MongoClient
 from pymongo.collection import Collection
+from os import getenv
 
 
-class MongoDBConfiguration:
+class MongoDBConnection:
+    _instance = None
 
-    def init_db(self, uri: str, db: str) : 
+    def __new__(cls):
         """
-        Initialize MongoDB configuration
-
-        Args:
-            uri (str): The name of the collection to be initialized.
-            db (str): The name of the database to be initialized.
+        Create a MongoDB connection instance following the singleton pattern
         """
-        self.MONGO_URI = uri
-        self.MONGO_DB = db
-        return self
-    def init_collection(collection: str) -> Collection:
+        if cls._instance is None:
+            cls._instance = super(MongoDBConnection, cls).__new__(cls)
+            cls._instance.MONGO_URI = getenv("MONGO_URI")
+            cls._instance.MONGO_DB = getenv("MONGO_DB")
+        return cls._instance
+
+    @property
+    def db(self):
+        if self._db is None:
+            raise Exception("Database not initialized. Call init_db first.")
+        return self._db
+
+    def init_collection(cls, collection: str) -> Collection:
         """
         Initialize a collection in a MongoDB database.
 
@@ -25,6 +32,6 @@ class MongoDBConfiguration:
         Returns:
             Collection: The initialized collection in the MongoDB database.
         """
-        mongo = MongoClient(MongoDBConfiguration.MONGO_URI)
-        db = mongo[MongoDBConfiguration.MONGO_DB]
+        mongo = MongoClient(cls.MONGO_URI)
+        db = mongo[cls.MONGO_DB]
         return db[collection]
