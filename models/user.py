@@ -45,5 +45,5 @@ class UserInputModel(BaseModel):
         return value
 
 class UserCredentials(BaseModel):
-    login: EmailStr
+    login: str
     password: str

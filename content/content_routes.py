@@ -84,7 +84,10 @@ def update_content(content_id: str) -> Dict[str, Any]:
         content_logger.info(f"content called with url {request.url}")
         existing_content = content_manager.get_content(content_id)
         current_user = get_jwt_identity()
-
+        if existing_content is None:
+            content_logger.info(f"Content not found")
+            return jsonify({"error": "Content not found"}), 404
+        
         if existing_content.created_by != current_user:
             return (
                 jsonify(
