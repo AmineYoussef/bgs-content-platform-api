@@ -1,0 +1,156 @@
+{
+	"info": {
+		"_postman_id": "52927a63-6b76-4150-929b-27a74eca496e",
+		"name": "Users",
+		"description": "Collection containing endpoints for retrievings users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23389690"
+	},
+	"item": [
+		{
+			"name": "Get Users",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/users",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users"
+					]
+				},
+				"description": "Endpoint to retrieve a list of users."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"_id\": \"66524b1e30eda5f4dbfac054\",\n            \"created_at\": \"2024-05-25T21:33:34.048000\",\n            \"email\": \"test1@mail.com\",\n            \"password\": \"scrypt:32768:8:1$3R2HCY6N53tj7qGl$40ed69f84f998dad819852d8eeb1fda42ba6e57769040723ec5da9e417bcb5887ef0916dde8938eb89c5224dd59b91a36e2922c9c120aa89dbac564f3545724c\",\n            \"username\": \"Nomad123\"\n        },\n        {\n            \"_id\": \"66533a71d11369778ecbe574\",\n            \"created_at\": \"2024-05-26T14:34:41.637000\",\n            \"email\": \"test@mail.com\",\n            \"password\": \"scrypt:32768:8:1$oX8xukvcv5K5gtFB$6b9886e0037ff6a7f36fa772f1ea06e2d73dbf9279de24f055b532e5de1462fdafcc33ab642e3036e6be12426b60825d2895054a04dbeab75e43423f86419693\",\n            \"username\": \"Nomad\"\n        }\n    ],\n    \"pagination\": {\n        \"page\": 1,\n        \"page_size\": 10,\n        \"total_items\": 2,\n        \"total_pages\": 1\n    },\n    \"sorting\": {\n        \"sort_by\": \"title\",\n        \"sort_direction\": \"ASC\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Get User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/user/{{userId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"{{userId}}"
+					]
+				},
+				"description": "Endpoint to retrieve a specific user by their ID."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/user/66524b1e30eda5f4dbfac054",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"66524b1e30eda5f4dbfac054"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"_id\": \"66524b1e30eda5f4dbfac054\",\n    \"created_at\": \"2024-05-25T21:33:34.048000\",\n    \"email\": \"test1@mail.com\",\n    \"password\": \"scrypt:32768:8:1$3R2HCY6N53tj7qGl$40ed69f84f998dad819852d8eeb1fda42ba6e57769040723ec5da9e417bcb5887ef0916dde8938eb89c5224dd59b91a36e2922c9c120aa89dbac564f3545724c\",\n    \"username\": \"Nomad123\"\n}"
+				},
+				{
+					"name": "Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/user/{{invalidUserId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"{{invalidUserId}}"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"user not found\"\n}"
+				}
+			]
+		}
+	]
+}

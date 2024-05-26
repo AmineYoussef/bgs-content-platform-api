@@ -1,0 +1,783 @@
+{
+	"info": {
+		"_postman_id": "1680ed5e-e757-44d4-aae0-815d858809b5",
+		"name": "Content",
+		"description": "Collection containing endpoints for managing content",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23389690"
+	},
+	"item": [
+		{
+			"name": "Get Content List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/content?page=1&page_size=3&sort_by=category&sort_direction=ASC",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"content"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "page_size",
+							"value": "3"
+						},
+						{
+							"key": "sort_by",
+							"value": "category"
+						},
+						{
+							"key": "sort_direction",
+							"value": "ASC"
+						}
+					]
+				},
+				"description": "Endpoint to retrieve a list of content items. Supports pagination and sorting by a given field name."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/content?page=1&page_size=3&sort_by=category&sort_direction=ASC",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"content"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "page_size",
+									"value": "3"
+								},
+								{
+									"key": "sort_by",
+									"value": "category"
+								},
+								{
+									"key": "sort_direction",
+									"value": "ASC"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"_id\": \"66531f932ead6070153f0394\",\n            \"category\": \"artwork\",\n            \"content_url\": \"https://example.com/amazing_fantasy_15_comic.jpg\",\n            \"created_at\": \"2024-05-26T12:40:03.583000\",\n            \"created_by\": \"66524b1e30eda5f4dbfac054\",\n            \"description\": \"This is a classic comic book featuring the first appearance of Spider-Man!\",\n            \"tags\": [\n                \"test\",\n                \"test1\",\n                \"test2\"\n            ],\n            \"thumbnail_url\": \"https://example.com/spiderman_comic_thumbnail.jpg\",\n            \"title\": \"Amazing Fantasy #15 (Spider-Man's First Appearance)\"\n        },\n        {\n            \"_id\": \"66532da3d7499268c5469ba4\",\n            \"category\": \"artwork\",\n            \"content_url\": \"https://example.com/amazing_fantasy_15_comic.jpg\",\n            \"created_at\": \"2024-05-26T13:40:03.594000\",\n            \"created_by\": \"66524b1e30eda5f4dbfac054\",\n            \"description\": \"This is a classic comic book featuring the first appearance of Spider-Man!\",\n            \"tags\": [\n                \"test3\"\n            ],\n            \"thumbnail_url\": \"https://example.com/spiderman_comic_thumbnail.jpg\",\n            \"title\": \"Amazing Fantasy #15 (Spider-Man's First Appearance)\"\n        },\n        {\n            \"_id\": \"6653356acbc7345f9cd1ece0\",\n            \"category\": \"artwork\",\n            \"content_url\": \"https://example.com/amazing_fantasy_15_comic.jpg\",\n            \"created_at\": \"2024-05-26T14:13:14.685000\",\n            \"created_by\": \"66524b1e30eda5f4dbfac054\",\n            \"description\": \"This is a classic comic book featuring the first appearance of Spider-Man!\",\n            \"tags\": [\n                \"test3\"\n            ],\n            \"thumbnail_url\": \"https://example.com/spiderman_comic_thumbnail.jpg\",\n            \"title\": \"Amazing Fantasy #15 (Spider-Man's First Appearance)\"\n        }\n    ],\n    \"pagination\": {\n        \"page\": 1,\n        \"page_size\": 3,\n        \"total_items\": 5,\n        \"total_pages\": 2\n    },\n    \"sorting\": {\n        \"sort_by\": \"category\",\n        \"sort_direction\": \"ASC\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Content List By Filter",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRF-TOKEN",
+						"value": "{{csrfToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Amazing Fantasy\",\r\n    \"category\": \"artwork\",\r\n    \"tags\": [\"test\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/content?page=1&page_size=3&sort_by=category&sort_direction=ASC",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"content"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "page_size",
+							"value": "3"
+						},
+						{
+							"key": "sort_by",
+							"value": "category"
+						},
+						{
+							"key": "sort_direction",
+							"value": "ASC"
+						}
+					]
+				},
+				"description": "Endpoint to retrieve a filtered list of content. Supports filtering by title, category, and tags along with pagination and sorting."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRF-TOKEN",
+								"value": "{{csrfToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Amazing Fantasy\",\r\n    \"category\": \"artwork\",\r\n    \"tags\": [\"test\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/content?page=1&page_size=3&sort_by=category&sort_direction=ASC",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"content"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "page_size",
+									"value": "3"
+								},
+								{
+									"key": "sort_by",
+									"value": "category"
+								},
+								{
+									"key": "sort_direction",
+									"value": "ASC"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"_id\": \"66532da3d7499268c5469ba4\",\n            \"category\": \"artwork\",\n            \"content_url\": \"https://example.com/amazing_fantasy_15_comic.jpg\",\n            \"created_at\": \"2024-05-26T13:40:03.594000\",\n            \"created_by\": \"66524b1e30eda5f4dbfac054\",\n            \"description\": \"This is a classic comic book featuring the first appearance of Spider-Man!\",\n            \"tags\": [\n                \"test3\"\n            ],\n            \"thumbnail_url\": \"https://example.com/spiderman_comic_thumbnail.jpg\",\n            \"title\": \"Amazing Fantasy #15 (Spider-Man's First Appearance)\"\n        },\n        {\n            \"_id\": \"6653356acbc7345f9cd1ece0\",\n            \"category\": \"artwork\",\n            \"content_url\": \"https://example.com/amazing_fantasy_15_comic.jpg\",\n            \"created_at\": \"2024-05-26T14:13:14.685000\",\n            \"created_by\": \"66524b1e30eda5f4dbfac054\",\n            \"description\": \"This is a classic comic book featuring the first appearance of Spider-Man!\",\n            \"tags\": [\n                \"test3\"\n            ],\n            \"thumbnail_url\": \"https://example.com/spiderman_comic_thumbnail.jpg\",\n            \"title\": \"Amazing Fantasy #15 (Spider-Man's First Appearance)\"\n        },\n        {\n            \"_id\": \"665339f5d11369778ecbe573\",\n            \"category\": \"artwork\",\n            \"content_url\": \"https://example.com/amazing_fantasy_15_comic.jpg\",\n            \"created_at\": \"2024-05-26T14:32:37.265000\",\n            \"created_by\": \"66524b1e30eda5f4dbfac054\",\n            \"description\": \"This is a classic comic book featuring the first appearance of Spider-Man!\",\n            \"tags\": [\n                \"test3\"\n            ],\n            \"thumbnail_url\": \"https://example.com/spiderman_comic_thumbnail.jpg\",\n            \"title\": \"Amazing Fantasy #15 (Spider-Man's First Appearance)\"\n        }\n    ],\n    \"pagination\": {\n        \"page\": 1,\n        \"page_size\": 3,\n        \"total_items\": 4,\n        \"total_pages\": 2\n    },\n    \"sorting\": {\n        \"sort_by\": \"category\",\n        \"sort_direction\": \"ASC\"\n    }\n}"
+				},
+				{
+					"name": "Invalid Filter",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRF-TOKEN",
+								"value": "{{csrfToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Amazing Fantasy\",\r\n    \"category\": \"artworkaze\",\r\n    \"tags\": [\r\n        \"test\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/content?page=1&page_size=3&sort_by=category&sort_direction=ASC",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"content"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "page_size",
+									"value": "3"
+								},
+								{
+									"key": "sort_by",
+									"value": "category"
+								},
+								{
+									"key": "sort_direction",
+									"value": "ASC"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"1 validation error for ContentFilterModel\\ncategory\\n  category must be one of the following values: game | video | artwork | music (type=value_error)\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Content",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/content/66525153e195d4588321f68c",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"content",
+						"66525153e195d4588321f68c"
+					]
+				},
+				"description": "Endpoint to retrieve a specific content item by its ID."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/content/66532da3d7499268c5469ba4",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"content",
+								"66532da3d7499268c5469ba4"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"_id\": \"66532da3d7499268c5469ba4\",\n    \"category\": \"artwork\",\n    \"content_url\": \"https://example.com/amazing_fantasy_15_comic.jpg\",\n    \"created_at\": \"2024-05-26T13:40:03.594000\",\n    \"created_by\": \"66524b1e30eda5f4dbfac054\",\n    \"description\": \"This is a classic comic book featuring the first appearance of Spider-Man!\",\n    \"tags\": [\n        \"test3\"\n    ],\n    \"thumbnail_url\": \"https://example.com/spiderman_comic_thumbnail.jpg\",\n    \"title\": \"Amazing Fantasy #15 (Spider-Man's First Appearance)\"\n}"
+				},
+				{
+					"name": "Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/content/66525153e195d4588321f68c",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"content",
+								"66525153e195d4588321f68c"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"content not found\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Add Content",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRF-TOKEN",
+						"value": "{{csrfToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Amazing Fantasy #15 (Spider-Man's First Appearance)\",\r\n  \"description\": \"This is a classic comic book featuring the first appearance of Spider-Man!\",\r\n  \"category\": \"artwork\",\r\n  \"thumbnail_url\": \"https://example.com/spiderman_comic_thumbnail.jpg\",\r\n  \"content_url\": \"https://example.com/amazing_fantasy_15_comic.jpg\",\r\n  \"tags\": [\"test3\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/content/add",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"content",
+						"add"
+					]
+				},
+				"description": "Endpoint to add new content. Requires title, description, category, thumbnail URL, content URL, and tags."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRF-TOKEN",
+								"value": "{{csrfToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Amazing Fantasy #15 (Spider-Man's First Appearance)\",\r\n  \"description\": \"This is a classic comic book featuring the first appearance of Spider-Man!\",\r\n  \"category\": \"artwork\",\r\n  \"thumbnail_url\": \"https://example.com/spiderman_comic_thumbnail.jpg\",\r\n  \"content_url\": \"https://example.com/amazing_fantasy_15_comic.jpg\",\r\n  \"tags\": [\"test3\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/content/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"content",
+								"add"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"_id\": \"665347a96b81e6fe095da894\",\n    \"category\": \"artwork\",\n    \"content_url\": \"https://example.com/amazing_fantasy_15_comic.jpg\",\n    \"created_at\": \"2024-05-26T15:31:05.527000\",\n    \"created_by\": \"66524b1e30eda5f4dbfac054\",\n    \"description\": \"This is a classic comic book featuring the first appearance of Spider-Man!\",\n    \"tags\": [\n        \"test3\"\n    ],\n    \"thumbnail_url\": \"https://example.com/spiderman_comic_thumbnail.jpg\",\n    \"title\": \"Amazing Fantasy #15 (Spider-Man's First Appearance)\"\n}"
+				},
+				{
+					"name": "Invalid Form",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRF-TOKEN",
+								"value": "{{csrfToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Amazing Fantasy #15 (Spider-Man's First Appearance)\",\r\n  \"description\": \"This is a classic comic book featuring the first appearance of Spider-Man!\",\r\n  \"category\": \"artworkare\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/content/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"content",
+								"add"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"2 validation errors for ContentInputModel\\ncategory\\n  category must be one of the following values: game | video | artwork | music (type=value_error)\\ncontent_url\\n  field required (type=value_error.missing)\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Update Content",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-CSRF-TOKEN",
+						"value": "{{csrfToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"category\": \"artwork\",\r\n    \"content_url\": \"https://example.com/amazing_fantasy_15_comic.jpg\",\r\n    \"created_at\": \"2024-05-26T12:40:03.583000\",\r\n    \"created_by\": \"66524b1e30eda5f4dbfac054\",\r\n    \"description\": \"This is a classic comic book featuring the first appearance of Spider-Man!\",\r\n    \"tags\": [\r\n        \"test\",\r\n        \"test1\",\r\n        \"test2\"\r\n    ],\r\n    \"thumbnail_url\": \"https://example.com/spiderman_comic_thumbnail.jpg\",\r\n    \"title\": \"Amazing Fantasy #15 (Spider-Man's First Appearance)\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/content/66531f932ead6070153f0394",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"content",
+						"66531f932ead6070153f0394"
+					]
+				},
+				"description": "Endpoint to update an existing content item owned by the current user. Requires category, content URL, description, tags, thumbnail URL, and title."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-CSRF-TOKEN",
+								"value": "{{csrfToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"category\": \"artwork\",\r\n    \"content_url\": \"https://example.com/amazing_fantasy_15_comic.jpg\",\r\n    \"description\": \"This is a classic comic book featuring the first appearance of Spider-Man!\",\r\n    \"tags\": [\r\n        \"test\",\r\n        \"test1\",\r\n        \"test2\"\r\n    ],\r\n    \"thumbnail_url\": \"https://example.com/spiderman_comic_thumbnail.jpg\",\r\n    \"title\": \"Amazing Fantasy #15 (Spider-Man's First Appearance) Test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/content/66531f932ead6070153f0394",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"content",
+								"66531f932ead6070153f0394"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"_id\": \"66531f932ead6070153f0394\",\n    \"category\": \"artwork\",\n    \"content_url\": \"https://example.com/amazing_fantasy_15_comic.jpg\",\n    \"created_at\": \"2024-05-26T12:40:03.583000\",\n    \"created_by\": \"66524b1e30eda5f4dbfac054\",\n    \"description\": \"This is a classic comic book featuring the first appearance of Spider-Man!\",\n    \"tags\": [\n        \"test\",\n        \"test1\",\n        \"test2\"\n    ],\n    \"thumbnail_url\": \"https://example.com/spiderman_comic_thumbnail.jpg\",\n    \"title\": \"Amazing Fantasy #15 (Spider-Man's First Appearance) Test\"\n}"
+				},
+				{
+					"name": "Invalid Form",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-CSRF-TOKEN",
+								"value": "{{csrfToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"category\": \"artworkss\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/content/66531f932ead6070153f0394",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"content",
+								"66531f932ead6070153f0394"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"1 validation error for PartialContentModel\\ncategory\\n  category must be one of the following values: game | video | artwork | music (type=value_error)\"\n}"
+				},
+				{
+					"name": "Content Not Owned",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-CSRF-TOKEN",
+								"value": "{{csrfToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"category\": \"artwork\",\r\n    \"content_url\": \"https://example.com/amazing_fantasy_15_comic.jpg\",\r\n    \"created_at\": \"2024-05-26T12:40:03.583000\",\r\n    \"created_by\": \"66524b1e30eda5f4dbfac054\",\r\n    \"description\": \"This is a classic comic book featuring the first appearance of Spider-Man!\",\r\n    \"tags\": [\r\n        \"test\",\r\n        \"test1\",\r\n        \"test2\"\r\n    ],\r\n    \"thumbnail_url\": \"https://example.com/spiderman_comic_thumbnail.jpg\",\r\n    \"title\": \"Amazing Fantasy #15 (Spider-Man's First Appearance)\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/content/66531f932ead6070153f0394",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"content",
+								"66531f932ead6070153f0394"
+							]
+						}
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"You are not allowed to edit content that you did not create\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Delete Content",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-CSRF-TOKEN",
+						"value": "{{csrfToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/content/66525153e195d4588321f68c",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"content",
+						"66525153e195d4588321f68c"
+					]
+				},
+				"description": "Endpoint to delete a specific content item owned by the current user by its ID."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-CSRF-TOKEN",
+								"value": "{{csrfToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/content/66532da3d7499268c5469ba4",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"content",
+								"66532da3d7499268c5469ba4"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Content deleted successfully\"\n}"
+				},
+				{
+					"name": "Not Found",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-CSRF-TOKEN",
+								"value": "{{csrfToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/content/66525153e195d4588321f68css",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"content",
+								"66525153e195d4588321f68css"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"Content not found\"\n}"
+				},
+				{
+					"name": "Content Not Owned",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-CSRF-TOKEN",
+								"value": "{{csrfToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/content/66525153e195d4588321f68c",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"content",
+								"66525153e195d4588321f68c"
+							]
+						}
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"You are not allowed to delete content that you did not create\"\n}"
+				}
+			]
+		}
+	]
+}
