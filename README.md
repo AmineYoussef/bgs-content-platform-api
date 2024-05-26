@@ -23,7 +23,7 @@ The project adapts a modular architecture
 │   ├── __init__.py
 │   └── mongodb_connection.py
 │   └── mongodb_helpers.py
-├── auth
+├── models
 │   ├── __init__.py
 │   └── content.py
 │   └── py_object_id.py
