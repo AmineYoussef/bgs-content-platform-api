@@ -51,12 +51,39 @@ SECRET_KEY = "secret key with SHA256"
 DEBUG = True
 ```
 
-## Running
+### Prerequisites
+Ensure you have the following installed:
+- Python 3.10.x
+- pip
 
-1. Clone repository
-2. pip install .
-3. Run the following command to start the application:
-   `flask --app app run --debug --host=0.0.0.0 --port=5000`
+### Installation
+
+1. Clone the repository
+
+2. Create and activate a virtual environment:
+    ```bash
+    python -m venv venv
+    ```
+
+    - On Windows:
+        ```bash
+        venv\Scripts\activate
+        ```
+
+    - On macOS and Linux:
+        ```bash
+        source venv/bin/activate
+        ```
+
+3. Install the package:
+    ```bash
+    pip install .
+    ```
+
+4. Run the following command to start the application:
+    ```bash
+    flask --app app run --debug --host=0.0.0.0 --port=5000
+    ```
 
 ## Documentation
 
