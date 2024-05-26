@@ -2,12 +2,12 @@ from flask import Blueprint, jsonify, request
 from pymongo import ASCENDING, DESCENDING
 from db.mongodb_helpers import *
 import logging
-from user.user_controller import UserController
+from user.user_manager import UserManager
 from models.user import UserModel
 from flask_jwt_extended import jwt_required
 
 user_routes = Blueprint("users_bp", __name__)
-user_controller = UserController()
+user_Manager = UserManager()
 user_logger = logging.getLogger(__name__)
 user_logger.setLevel(logging.DEBUG)
 
@@ -16,7 +16,7 @@ user_logger.setLevel(logging.DEBUG)
 def get_user(user_id: str) -> UserModel:
     try:
         user_logger.info(f"get_user called with url {request.url}")
-        user = user_controller.get_user(user_id)
+        user = user_Manager.get_user(user_id)
         if user is None:
             user_logger.info(f"user not found")
             return jsonify({"error": "user not found"}), 404
@@ -44,7 +44,7 @@ def get_users() -> ListSuccessResponse:
         )
         sort_direction = DESCENDING if sort_direction_request == "DESC" else ASCENDING
         filter_obj = request.json if request.method == "POST" else {}
-        response = user_controller.get_users(
+        response = user_Manager.get_users(
             sort_direction, sort_by, page, page_size, filter_obj
         )
         return jsonify(response), 200

@@ -5,11 +5,11 @@ from db.mongodb_connection import MongoDBConnection
 from db.mongodb_helpers import *
 
 
-class UserController:
+class UserManager:
     db: Collection = MongoDBConnection().init_collection("users")
 
     def __init__(self):
-        return super(UserController, self).__init__()
+        return super(UserManager, self).__init__()
 
     def get_user(self, user_id: str) -> UserModel | None:
         if not user_id:

@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, validator
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 from models.py_object_id import PyObjectId, ObjectId
 from fastapi.encoders import jsonable_encoder
@@ -13,6 +13,7 @@ class ContentModel(BaseModel):
     content_url: Optional[str]
     created_at: Optional[datetime]
     created_by: Optional[str]
+    tags: Optional[List[str]]
 
     
     class Config:
@@ -30,9 +31,10 @@ class ContentInputModel(BaseModel):
     content_url: str = Field(..., description="URL of the actual content")
     created_at: datetime = Field(default_factory=datetime.now, description="Timestamp of content creation")
     created_by: str = Field(..., description="User who posted this content item")
+    tags: List[str] = Field([], description="List of tags for this content item")
 
     @validator("category")
-    def validate_password(cls, value: str) -> str:
+    def validate_category(cls, value: str) -> str:
         if value not in ["game", "video", "artwork", "music"]:
             raise ValueError("category must be one of the following values: game | video | artwork | music")
         return value
@@ -43,10 +45,21 @@ class PartialContentModel(BaseModel):
     category: Optional[str] = Field(default=None, description="Category of the content (game, video, artwork, music)")
     thumbnail_url: Optional[str] = Field(default=None, description="URL of the content's thumbnail image")
     content_url: Optional[str] = Field(default=None, description="URL of the actual content")
+    tags: Optional[List[str]] = Field(default=None, description="List of tags for this content item")
 
     @validator("category")
-    def validate_password(cls, value: str) -> str:
+    def validate_category(cls, value: str) -> str:
         if value not in ["game", "video", "artwork", "music"]:
             raise ValueError("category must be one of the following values: game | video | artwork | music")
         return value
     
+class ContentFilterModel(BaseModel):
+    title: Optional[str]
+    category: Optional[str]
+    tags: Optional[List[str]]
+
+    @validator("category")
+    def validate_category(cls, value: str) -> str:
+        if value not in ["game", "video", "artwork", "music"]:
+            raise ValueError("category must be one of the following values: game | video | artwork | music")
+        return value

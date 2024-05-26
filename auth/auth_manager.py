@@ -4,7 +4,7 @@ from db.mongodb_connection import MongoDBConnection
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-class AuthController:
+class AuthManager:
     db: Collection = MongoDBConnection().init_collection("users")
 
     def register_user(cls, user_input: UserInputModel) -> UserModel:
@@ -13,7 +13,6 @@ class AuthController:
         inserted_id = result.inserted_id
         inserted_user = cls.db.find_one({"_id": inserted_id})
         inserted_user["_id"] = str(inserted_user["_id"])
-
         return UserModel(**inserted_user)
 
     def verify_duplicate_email(cls, email: str) -> bool:

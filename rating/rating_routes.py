@@ -2,12 +2,12 @@ from flask import Blueprint, jsonify, request
 from pymongo import ASCENDING, DESCENDING
 from db.mongodb_helpers import *
 import logging
-from rating.rating_controller import RatingController
+from rating.rating_manager import RatingManager
 from models.rating import *
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 rating_routes = Blueprint("ratings_bp", __name__)
-rating_controller = RatingController()
+rating_manager = RatingManager()
 rating_logger = logging.getLogger(__name__)
 rating_logger.setLevel(logging.DEBUG)
 
@@ -16,7 +16,7 @@ rating_logger.setLevel(logging.DEBUG)
 def get_rating(rating_id: str) -> RatingModel:
     try:
         rating_logger.info(f"get_rating called with url {request.url}")
-        rating = rating_controller.get_rating(rating_id)
+        rating = rating_manager.get_rating(rating_id)
         if rating is None:
             rating_logger.info(f"rating not found")
             return jsonify({"error": "rating not found"}), 404
@@ -45,7 +45,7 @@ def get_user_ratings() -> ListSuccessResponse:
         sort_direction = DESCENDING if sort_direction_request == "DESC" else ASCENDING
         current_user = get_jwt_identity()
         filter_obj = {"user_id": current_user}
-        response = rating_controller.get_ratings(
+        response = rating_manager.get_ratings(
             sort_direction, sort_by, page, page_size, filter_obj
         )
         return jsonify(response), 200
@@ -74,7 +74,7 @@ def get_content_ratings(content_id: str) -> ListSuccessResponse:
         )
         sort_direction = DESCENDING if sort_direction_request == "DESC" else ASCENDING
         filter_obj = {"content_id": content_id}
-        response = rating_controller.get_ratings(
+        response = rating_manager.get_ratings(
             sort_direction, sort_by, page, page_size, filter_obj
         )
         return jsonify(response), 200
@@ -100,7 +100,7 @@ def add_rating(content_id: str) -> RatingModel:
         request.json["content_id"] = content_id
         rating_input = RatingInputModel(**request.json)
 
-        rating = rating_controller.add_rating(rating_input)
+        rating = rating_manager.add_rating(rating_input)
         return rating.to_json(), 201
 
     except ValueError as e:
@@ -119,7 +119,7 @@ def add_rating(content_id: str) -> RatingModel:
 def update_rating(rating_id: str) -> Dict[str, Any]:
     try:
         rating_logger.info(f"rating called with url {request.url}")
-        existing_rating = rating_controller.get_rating(rating_id)
+        existing_rating = rating_manager.get_rating(rating_id)
 
         if request.json == {}:
             rating_logger.info(f"Empty request body")
@@ -129,7 +129,7 @@ def update_rating(rating_id: str) -> Dict[str, Any]:
         if existing_rating is None:
             rating_logger.info(f"Rating not found")
             return jsonify({"error": "Rating not found"}), 404
-        updated_rating = rating_controller.update_rating(
+        updated_rating = rating_manager.update_rating(
             update_data.dict(exclude_unset=True), rating_id
         )
 
@@ -148,13 +148,13 @@ def update_rating(rating_id: str) -> Dict[str, Any]:
 def delete_rating(rating_id: str):
     try:
         rating_logger.info(f"delete_rating called with url {request.url}")
-        existing_rating = rating_controller.get_rating(rating_id)
+        existing_rating = rating_manager.get_rating(rating_id)
 
         if existing_rating is None:
             rating_logger.info(f"Rating not found")
             return jsonify({"error": "Rating not found"}), 404
 
-        rating_controller.delete_rating(rating_id)
+        rating_manager.delete_rating(rating_id)
 
         return jsonify({"message": "Rating deleted successfully"}), 200
     except Exception as e:

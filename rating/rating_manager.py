@@ -5,7 +5,7 @@ from db.mongodb_connection import MongoDBConnection
 from db.mongodb_helpers import *
 
 
-class RatingController:
+class RatingManager:
     db: Collection = MongoDBConnection().init_collection("ratings")
 
     def get_rating(cls, rating_id: str) -> RatingModel | None:

@@ -20,7 +20,7 @@ CORS(app)
 # Load JWT configuration
 SECRET_KEY = os.environ.get("SECRET_KEY") or "secret key goes here"
 app.config["JWT_SECRET_KEY"] = SECRET_KEY
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=1)
 jwt = JWTManager(app)
 
 # Load configuration from .env file
