@@ -1,13 +1,22 @@
 from models.user import *
+from flask import jsonify
 from pymongo.collection import Collection
 from db.mongodb_connection import MongoDBConnection
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies
 
 
 class AuthManager:
     db: Collection = MongoDBConnection().init_collection("users")
 
     def register_user(cls, user_input: UserInputModel) -> UserModel:
+        username_exists = cls.verify_duplicate_username(user_input.username)
+        if username_exists:
+            raise ValueError("Username already taken")
+        email_exists = cls.verify_duplicate_email(user_input.email)
+        if email_exists:
+            raise ValueError("Email already taken")
+        
         user_input.password = generate_password_hash(user_input.password)
         result = cls.db.insert_one(user_input.dict())
         inserted_id = result.inserted_id
@@ -27,4 +36,13 @@ class AuthManager:
         user = cls.db.find_one({"email": email})
         if not user or not check_password_hash(user["password"], password):
             return None
-        return user
+        user = UserModel(**user).to_json()
+        access_token = create_access_token(identity=user["_id"])
+        response = jsonify({"token": access_token})
+        set_access_cookies(response, access_token)
+        return response
+    
+    def logout(cls):
+        response = jsonify({"msg": "logout successful"})
+        unset_jwt_cookies(response)
+        return response
