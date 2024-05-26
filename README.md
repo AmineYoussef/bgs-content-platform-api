@@ -82,7 +82,7 @@ Ensure you have the following installed:
 
 4. Run the following command to start the application:
     ```bash
-    flask --app app run --debug --host=0.0.0.0 --port=5000
+    python -m flask --app app run --debug --host=0.0.0.0 --port=5000
     ```
 
 ## Documentation
