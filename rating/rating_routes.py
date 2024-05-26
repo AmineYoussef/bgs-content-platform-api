@@ -8,6 +8,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 rating_routes = Blueprint("ratings_bp", __name__)
 rating_manager = RatingManager()
+# content_manager = ContentManager()
 rating_logger = logging.getLogger(__name__)
 rating_logger.setLevel(logging.DEBUG)
 
@@ -62,7 +63,6 @@ def get_user_ratings() -> ListSuccessResponse:
 
 
 @rating_routes.route("/content/<string:content_id>/ratings", methods=["GET"])
-@jwt_required()
 def get_content_ratings(content_id: str) -> ListSuccessResponse:
     try:
         rating_logger.info(f"get_rating called with url {request.url}")
@@ -73,6 +73,10 @@ def get_content_ratings(content_id: str) -> ListSuccessResponse:
             "sort_direction", default=ASCENDING
         )
         sort_direction = DESCENDING if sort_direction_request == "DESC" else ASCENDING
+        content = rating_manager.get_content(content_id)
+        if content is None:
+            rating_logger.info(f"Content not found")
+            return jsonify({"error": "Content not found"}), 404
         filter_obj = {"content_id": content_id}
         response = rating_manager.get_ratings(
             sort_direction, sort_by, page, page_size, filter_obj
@@ -96,6 +100,10 @@ def add_rating(content_id: str) -> RatingModel:
     try:
         rating_logger.info(f"add_rating called with url {request.url}")
         current_user = get_jwt_identity()
+        content = rating_manager.get_content(content_id)
+        if content is None:
+            rating_logger.info(f"Content not found")
+            return jsonify({"error": "Content not found"}), 404
         request.json["user_id"] = current_user
         request.json["content_id"] = content_id
         rating_input = RatingInputModel(**request.json)

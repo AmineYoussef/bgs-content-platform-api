@@ -1,5 +1,7 @@
 from models.content import *
+from flask import jsonify
 from bson import ObjectId
+from bson.errors import InvalidId
 from pymongo.collection import Collection, Cursor
 from db.mongodb_connection import MongoDBConnection
 from db.mongodb_helpers import *
@@ -12,8 +14,10 @@ class ContentManager:
     def get_content(cls, content_id: str) -> ContentModel | None:
         if not content_id:
             raise ValueError("content ID is required.")
-
-        object_id = ObjectId(content_id)
+        try:
+            object_id = ObjectId(content_id)
+        except (InvalidId, TypeError):
+            return None
         content: Cursor = cls.db.find_one({"_id": object_id})
         return ContentModel(**content) if content is not None else None
 
@@ -21,12 +25,13 @@ class ContentManager:
         query = {}
         filter_obj = filter_obj.dict(exclude_none=True)
         if "title" in filter_obj:
+            title = filter_obj["title"]
             query["title"] = {
-                "$regex": f".*{re.escape(filter_obj.title)}.*",
+                "$regex": f".*{re.escape(title)}.*",
                 "$options": "i",
             }
         if "category" in filter_obj:
-            query["category"] = filter_obj.category
+            query["category"] = filter_obj["category"]
         if "tags" in filter_obj:
             query["tags"] = {"$in": [tag for tag in filter_obj["tags"]]}
         return query
@@ -39,7 +44,7 @@ class ContentManager:
         page_size: int,
         filter_obj: ContentFilterModel,
     ) -> ListSuccessResponse:
-        if filter_obj is not None:
+        if filter_obj:
             filter_obj = cls.get_content_filter_query(filter_obj)
         content_list_cursor: Cursor = get_find_cursor(
             cls.db, filter_obj, sort_direction, sort_by, page, page_size
@@ -66,5 +71,8 @@ class ContentManager:
         return updated_content
 
     def delete_content(cls, content_id: str):
-        object_id = ObjectId(content_id)
+        try:
+            object_id = ObjectId(content_id)
+        except (InvalidId, TypeError):
+            return None
         return cls.db.delete_one({"_id": object_id})

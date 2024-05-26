@@ -11,7 +11,7 @@ auth_logger.setLevel(logging.DEBUG)
 
 
 @auth_routes.route("/register", methods=["POST"])
-def register() -> ListSuccessResponse:
+def register():
     try:
         auth_logger.info(f"register called with url {request.url}")
         user_input = UserInputModel(**request.json)
@@ -21,9 +21,6 @@ def register() -> ListSuccessResponse:
 
     except ValueError as e:
         auth_logger.error(f"Value Error: {str(e)}")
-        return jsonify({"error": str(e)}), 400
-    except IndexError as e:
-        auth_logger.error(f"Index Error: {str(e)}")
         return jsonify({"error": str(e)}), 400
     except Exception as e:
         auth_logger.error(f"Exception: {str(e)}")
@@ -36,21 +33,23 @@ def login():
         auth_logger.info(f"login called with url {request.url}")
         user_crendentials = UserCredentials(**request.json)
         response = auth_manager.login(
-            user_crendentials.email, user_crendentials.password
+            user_crendentials.login, user_crendentials.password
         )
         return response, 200
-    
+
     except ValueError as e:
         auth_logger.error(f"Value Error: {str(e)}")
-        return jsonify({"error": str(e)}), 400
-    except IndexError as e:
-        auth_logger.error(f"Index Error: {str(e)}")
-        return jsonify({"error": str(e)}), 400
+        return jsonify({"error": str(e)}), 404
     except Exception as e:
         auth_logger.error(f"Exception: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
-@auth_routes.route("/logout", methods=["POST"])
+
+@auth_routes.route("/logout", methods=["GET"])
 def logout():
-    response = auth_manager.logout()
-    return response
+    try:
+        response = auth_manager.logout()
+        return response
+    except Exception as e:
+        auth_logger.error(f"Exception: {str(e)}")
+        return jsonify({"error": str(e)}), 500

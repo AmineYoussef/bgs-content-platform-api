@@ -1,18 +1,33 @@
 from models.rating import *
 from bson import ObjectId
+from bson.errors import InvalidId
 from pymongo.collection import Collection, Cursor
 from db.mongodb_connection import MongoDBConnection
 from db.mongodb_helpers import *
+from  models.content import *
 
 
 class RatingManager:
     db: Collection = MongoDBConnection().init_collection("ratings")
+    db_content: Collection = MongoDBConnection().init_collection("content")
 
+    def get_content(cls, content_id: str) -> ContentModel | None:
+        if not content_id:
+            raise ValueError("content ID is required.")
+        try:
+            object_id = ObjectId(content_id)
+        except (InvalidId, TypeError):
+            return None
+        content: Cursor = cls.db_content.find_one({"_id": object_id})
+        return ContentModel(**content) if content is not None else None
+    
     def get_rating(cls, rating_id: str) -> RatingModel | None:
         if not rating_id:
             raise ValueError("rating ID is required.")
-
-        object_id = ObjectId(rating_id)
+        try:
+            object_id = ObjectId(rating_id)
+        except (InvalidId, TypeError):
+            return None
         rating: Cursor = cls.db.find_one({"_id": object_id})
         return RatingModel(**rating) if rating is not None else None
 
@@ -41,11 +56,17 @@ class RatingManager:
     def update_rating(
         cls, rating: Dict, rating_id: str
     ) -> RatingModel:
-        object_id = ObjectId(rating_id)
+        try:
+            object_id = ObjectId(rating_id)
+        except (InvalidId, TypeError):
+            return None
         cls.db.update_one({"_id": object_id}, {"$set": rating})
         updated_rating = cls.get_rating(rating_id)
         return updated_rating
 
     def delete_rating(cls, rating_id: str):
-        object_id = ObjectId(rating_id)
+        try:
+            object_id = ObjectId(rating_id)
+        except (InvalidId, TypeError):
+            return None
         return cls.db.delete_one({"_id": object_id})

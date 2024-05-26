@@ -1,5 +1,6 @@
 from models.user import UserModel
 from bson import ObjectId
+from bson.errors import InvalidId
 from pymongo.collection import Collection, Cursor
 from db.mongodb_connection import MongoDBConnection
 from db.mongodb_helpers import *
@@ -8,14 +9,11 @@ from db.mongodb_helpers import *
 class UserManager:
     db: Collection = MongoDBConnection().init_collection("users")
 
-    def __init__(self):
-        return super(UserManager, self).__init__()
-
     def get_user(self, user_id: str) -> UserModel | None:
-        if not user_id:
-            raise ValueError("User ID is required.")
-
-        object_id = ObjectId(user_id)
+        try:
+            object_id = ObjectId(user_id)
+        except (InvalidId, TypeError):
+            return None
         user: Cursor = self.db.find_one({"_id": object_id})
         return UserModel(**user) if user is not None else None
 

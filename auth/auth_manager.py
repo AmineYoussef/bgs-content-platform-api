@@ -3,7 +3,7 @@ from flask import jsonify
 from pymongo.collection import Collection
 from db.mongodb_connection import MongoDBConnection
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies
+from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies, get_jwt_identity
 
 
 class AuthManager:
@@ -32,10 +32,12 @@ class AuthManager:
         user_count: int = cls.db.count_documents({"username": username})
         return user_count > 0
 
-    def login(cls, email: str, password: str) -> UserModel:
-        user = cls.db.find_one({"email": email})
+    def login(cls, login: str, password: str) -> UserModel:
+        if get_jwt_identity is not None:
+            cls.logout()
+        user = cls.db.find_one({"$or": [{"username": login}, {"email": login}]})
         if not user or not check_password_hash(user["password"], password):
-            return None
+            raise ValueError("Incorrect login or password")
         user = UserModel(**user).to_json()
         access_token = create_access_token(identity=user["_id"])
         response = jsonify({"token": access_token})

@@ -42,7 +42,9 @@ def get_contents() -> ListSuccessResponse:
             "sort_direction", default=ASCENDING
         )
         sort_direction = DESCENDING if sort_direction_request == "DESC" else ASCENDING
-        filter_obj = ContentFilterModel(**request.json) if request.method == "POST" else {}
+        filter_obj = (
+            ContentFilterModel(**request.json) if request.method == "POST" else {}
+        )
         response = content_manager.get_content_list(
             sort_direction, sort_by, page, page_size, filter_obj
         )
@@ -51,9 +53,6 @@ def get_contents() -> ListSuccessResponse:
     except ValueError as e:
         content_logger.error(f"Value Error: {str(e)}")
         return jsonify({"error": str(e)}), 400
-    except IndexError as e:
-        content_logger.error(f"Index Error: {str(e)}")
-        return jsonify({"error": str(e)}), 404
     except Exception as e:
         content_logger.error(f"Exception: {str(e)}")
         return jsonify({"error": str(e)}), 500
@@ -72,9 +71,6 @@ def add_content() -> ContentModel:
         return content.to_json(), 201
     except ValueError as e:
         content_logger.error(f"Value Error: {str(e)}")
-        return jsonify({"error": str(e)}), 400
-    except IndexError as e:
-        content_logger.error(f"Index Error: {str(e)}")
         return jsonify({"error": str(e)}), 400
     except Exception as e:
         content_logger.error(f"Exception: {str(e)}")
@@ -128,6 +124,11 @@ def delete_content(content_id: str):
         content_logger.info(f"delete_content called with url {request.url}")
         existing_content = content_manager.get_content(content_id)
         current_user = get_jwt_identity()
+
+        if existing_content is None:
+            content_logger.info(f"Content not found")
+            return jsonify({"error": "Content not found"}), 404
+
         if existing_content.created_by != current_user:
             return (
                 jsonify(
@@ -137,13 +138,7 @@ def delete_content(content_id: str):
                 ),
                 403,
             )
-
-        if existing_content is None:
-            content_logger.info(f"Content not found")
-            return jsonify({"error": "Content not found"}), 404
-
         content_manager.delete_content(content_id)
-
         return jsonify({"message": "Content deleted successfully"}), 200
     except Exception as e:
         content_logger.error(f"Exception: {str(e)}")
