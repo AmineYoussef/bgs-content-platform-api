@@ -49,3 +49,8 @@ def login():
     except Exception as e:
         auth_logger.error(f"Exception: {str(e)}")
         return jsonify({"error": str(e)}), 500
+
+@auth_routes.route("/logout", methods=["POST"])
+def logout():
+    response = auth_manager.logout()
+    return response
