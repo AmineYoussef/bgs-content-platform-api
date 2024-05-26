@@ -3,19 +3,24 @@ from flask_cors import CORS
 from auth.auth_routes import auth_routes
 from user.user_routes import user_routes
 from content.content_routes import content_routes
+from rating.rating_routes import rating_routes
+from datetime import timedelta
 from dotenv import load_dotenv
 import os, logging
 from flask_jwt_extended import JWTManager
 
 logging.basicConfig(
-        level=logging.DEBUG,
-        format="%(asctime)s - %(filename)s:%(lineno)d - %(levelname)s - %(message)s - [%(funcName)s]",
-    )
+    level=logging.DEBUG,
+    format="%(asctime)s - %(filename)s:%(lineno)d - %(levelname)s - %(message)s - [%(funcName)s]",
+)
 app_logger = logging.getLogger(__name__)
 app = Flask(__name__)
 CORS(app)
+
+# Load JWT configuration
 SECRET_KEY = os.environ.get("SECRET_KEY") or "secret key goes here"
 app.config["JWT_SECRET_KEY"] = SECRET_KEY
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 jwt = JWTManager(app)
 
 # Load configuration from .env file
@@ -38,6 +43,7 @@ if not os.path.exists(os.getenv("LOG_DIR")):
 app.register_blueprint(auth_routes)
 app.register_blueprint(user_routes)
 app.register_blueprint(content_routes)
+app.register_blueprint(rating_routes)
 
 
 if __name__ == "__main__":

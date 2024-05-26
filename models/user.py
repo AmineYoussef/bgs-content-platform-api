@@ -8,10 +8,10 @@ from datetime import datetime
 
 class UserModel(BaseModel):
     id: Optional[PyObjectId] = Field(default_factory=PyObjectId, alias="_id")
-    username: str
-    email: str
-    password: str
-    created_at: datetime
+    username: Optional[str]
+    email: Optional[str]
+    password: Optional[str]
+    created_at: Optional[datetime]
     class Config:
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
@@ -31,7 +31,7 @@ class UserInputModel(BaseModel):
     password: str = Field(
         ..., min_length=8, description="Password must be at least 8 characters long."
     )
-    created_at: datetime = Field(default_factory=datetime.now, description="Timestamp of content creation")
+    created_at: datetime = Field(default_factory=datetime.now, description="Timestamp of user registration")
 
 
     @validator("password")

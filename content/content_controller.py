@@ -8,9 +8,6 @@ from db.mongodb_helpers import *
 class ContentController:
     db: Collection = MongoDBConnection().init_collection("content")
 
-    def __init__(cls):
-        return super(ContentController, cls).__init__()
-
     def get_content(cls, content_id: str) -> ContentModel | None:
         if not content_id:
             raise ValueError("content ID is required.")
@@ -50,5 +47,5 @@ class ContentController:
         return updated_content
 
     def delete_content(cls, content_id: str):
-        job_object_id = ObjectId(content_id)
-        return cls.db.delete_one({"_id": job_object_id})
+        object_id = ObjectId(content_id)
+        return cls.db.delete_one({"_id": object_id})

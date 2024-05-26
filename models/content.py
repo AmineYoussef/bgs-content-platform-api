@@ -6,12 +6,14 @@ from fastapi.encoders import jsonable_encoder
 
 class ContentModel(BaseModel):
     id: Optional[PyObjectId] = Field(default_factory=PyObjectId, alias="_id")
-    title: str = Field(..., description="Title of the content item")
-    description: str = Field(..., description="Description of the content item")
-    category: str = Field(..., description="Category of the content (game, video, artwork, music)")
-    thumbnail_url: Optional[str] = Field(default=None, description="URL of the content's thumbnail image")
-    content_url: str = Field(..., description="URL of the actual content")
-    created_at: datetime = Field(default_factory=datetime.now, description="Timestamp of content creation")
+    title: Optional[str]
+    description: Optional[str]
+    category: Optional[str]
+    thumbnail_url: Optional[str]
+    content_url: Optional[str]
+    created_at: Optional[datetime]
+    created_by: Optional[str]
+
     
     class Config:
         arbitrary_types_allowed = True
@@ -26,6 +28,8 @@ class ContentInputModel(BaseModel):
     category: str = Field(..., description="Category of the content (game, video, artwork, music)")
     thumbnail_url: Optional[str] = Field(default=None, description="URL of the content's thumbnail image")
     content_url: str = Field(..., description="URL of the actual content")
+    created_at: datetime = Field(default_factory=datetime.now, description="Timestamp of content creation")
+    created_by: str = Field(..., description="User who posted this content item")
 
     @validator("category")
     def validate_password(cls, value: str) -> str:

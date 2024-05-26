@@ -8,7 +8,7 @@ def get_find_cursor(
         collection: Collection,
         filter: Dict[str, Any],
         sort_direction: Union[Literal[-1], Literal[1]] = 1,
-        sort_by: str = "_id",
+        sort_by: str = "created_at",
         page: int = 1,
         page_size: int = 10,
     ) -> Cursor:
